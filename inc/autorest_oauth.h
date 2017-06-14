@@ -103,9 +103,9 @@ future_t<http_response<optional<bearer_token>>> get_azure_token_using_client_cre
     curl_easy_setopt(curl, CURLOPT_COPYPOSTFIELDS, body.c_str());
     
     rapidjson::MemoryPoolAllocator<> allocator;
-    cancellationToken.ThrowIfCancellationRequested();
+    cancellationToken.throw_if_cancellation_requested();
     http_response<optional<bearer_token>> _httpResponse = co_await root_handler.invoke(curl);
-    cancellationToken.ThrowIfCancellationRequested();
+    cancellationToken.throw_if_cancellation_requested();
     // Dispatch based on response
     switch (_httpResponse.http_code)
     {

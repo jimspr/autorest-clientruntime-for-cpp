@@ -53,7 +53,7 @@ inline std::string escape_data_string(CURL* curl, const std::string& in)
 
 struct cancellation_token_t
 {
-  void ThrowIfCancellationRequested() {}
+  void throw_if_cancellation_requested() {}
 };
 
 struct delegating_handler_t

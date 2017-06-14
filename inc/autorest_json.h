@@ -36,6 +36,14 @@ void json_deserialize(T& out, const rapidjson::Value &value)
   out = serializer<T>::deserialize(value);
 }
 
+//Generic function for getting value as an out param
+template <typename T>
+void json_deserialize(T& out, const rapidjson::Value *value)
+{
+  if (value != nullptr)
+    out = serializer<T>::deserialize(*value);
+}
+
 // Generic function for returning value
 template <typename T>
 T json_deserialize(const rapidjson::Value &value)
