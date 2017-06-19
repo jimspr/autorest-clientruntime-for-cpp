@@ -6,6 +6,7 @@
 #include <vector>
 #include <optional>
 #include <string>
+#include <chrono>
 
 namespace autorest::json
 {
@@ -58,24 +59,42 @@ rapidjson::Value json_serialize(const T& value, rapidjson::Value::AllocatorType 
   return serializer<T>::serialize(value, allocator);
 }
 
+#if 0
 // Specializations for various existing types
 template <>
 struct serializer<std::tm>
 {
   static rapidjson::Value serialize(const std::tm tm, rapidjson::Value::AllocatorType &allocator)
   {
+    // TODO - need better formatting
     rapidjson::Value v;
-    // TODO
-    // rapidjson::Value v(value);
-    // parent.AddMember(name, v, allocator);
-    return v;
+    char buf[128];
+    sprintf(buf, "%4d-%2d-%2dT%2d-%2d-%2d", tm.year, tm.month, tm.mday, tm.hour, tm.min, tm.sec);
+    return rapidjson::Value(buf, allocator);
   }
   static std::tm deserialize(const rapidjson::Value &value)
   {
-    std::tm out; //TODO
+    std::tm out; //TODO - handle milliseconds and time zone properly
+    std::get_time(&out, "%Y-%m-%dT%H-%M-%S", value.GetString());
     return out;
   }
 };
+
+template <>
+struct serializer<std::chrono::duration<float>>
+{
+  static rapidjson::Value serialize(const std::chrono::duration<float> duration, rapidjson::Value::AllocatorType &allocator)
+  {
+    rapidjson::Value v;
+    return v;
+  }
+  static std::chrono::duration<float> deserialize(const rapidjson::Value &value)
+  {
+    std::chrono::duration<float> out; //TODO
+    return out;
+  }
+};
+#endif
 
 template <>
 struct serializer<int>
