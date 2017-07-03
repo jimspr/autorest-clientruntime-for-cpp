@@ -116,4 +116,66 @@ struct service_operations_t
 
   }
 };
+
+// generic converter, call T::to_string
+template <typename T>
+struct string_converter
+{
+  static std::string to_string(const T& t)
+  {
+    return T::to_string(t);
+  }
+};
+
+template <>
+struct string_converter<std::string>
+{
+  static std::string to_string(const std::string& str)
+  {
+    return str;
+  }
+};
+
+template <>
+struct string_converter<int64_t>
+{
+  static std::string to_string(int64_t value)
+  {
+    return std::to_string(value);
+  }
+};
+
+template <>
+struct string_converter<int>
+{
+  static std::string to_string(int value)
+  {
+    return std::to_string(value);
+  }
+};
+
+template <>
+struct string_converter<long>
+{
+  static std::string to_string(long value)
+  {
+    return std::to_string(value);
+  }
+};
+
+template <>
+struct string_converter<bool>
+{
+  static std::string to_string(bool b)
+  {
+    return b ? "true" : "false";
+  }
+};
+
+template <typename T>
+inline std::string to_string(const T& t)
+{
+  return string_converter<T>::to_string(t);
+}
+
 }
