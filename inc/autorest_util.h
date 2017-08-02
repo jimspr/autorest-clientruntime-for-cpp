@@ -53,7 +53,7 @@ inline std::string escape_data_string(CURL* curl, const std::string& in)
 
 struct cancellation_token_t
 {
-  void throw_if_cancellation_requested() {}
+  void throw_if_cancellation_requested() const {}
 };
 
 struct delegating_handler_t
@@ -96,6 +96,11 @@ struct guid_t
   uint16_t Data2;
   uint16_t Data3;
   uint8_t  Data4[8];
+};
+
+struct byte_array_t
+{
+  std::string contents;
 };
 
 struct service_client_credentials_t
@@ -169,6 +174,15 @@ struct string_converter<bool>
   static std::string to_string(bool b)
   {
     return b ? "true" : "false";
+  }
+};
+
+template <>
+struct string_converter<guid_t>
+{
+  static std::string to_string(const guid_t& guid)
+  {
+    return "guid_t_todo";
   }
 };
 

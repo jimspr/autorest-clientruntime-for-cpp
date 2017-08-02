@@ -123,6 +123,19 @@ struct serializer<int64_t>
 };
 
 template <>
+struct serializer<double>
+{
+  static rapidjson::Value serialize(double value, rapidjson::Value::AllocatorType &allocator)
+  {
+    return rapidjson::Value(value);
+  }
+  static double deserialize(const rapidjson::Value &value)
+  {
+    return value.Get<double>();
+  }
+};
+
+template <>
 struct serializer<bool>
 {
   static rapidjson::Value serialize(bool value, rapidjson::Value::AllocatorType &allocator)
@@ -229,4 +242,18 @@ struct serializer<guid_t>
     return guid;
   }
 };
+
+template <>
+struct serializer<byte_array_t>
+{
+  static rapidjson::Value serialize(const byte_array_t& value, rapidjson::Value::AllocatorType &allocator)
+  {
+    return rapidjson::Value(value.contents.c_str(), allocator);
+  }
+  static byte_array_t deserialize(const rapidjson::Value &value)
+  {
+    return byte_array_t { value.GetString() };
+  }
+};
+
 }
