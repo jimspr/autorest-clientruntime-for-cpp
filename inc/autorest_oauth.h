@@ -74,7 +74,7 @@ public:
 };
 
 future_t<http_response<optional<bearer_token>>> get_azure_token_using_client_credentials(curl_requester_t& root_handler, 
-  const string& tenant, const string& client_id, const string& client_secret, const string& resource, cancellation_token_t cancellationToken)
+  const string& tenant, const string& client_id, const string& client_secret, const string& resource, cancellation_token_t cancellationToken = {})
 {
     auto curl = curl_easy_init();
     if (tenant.empty())

@@ -167,7 +167,7 @@ struct serializer<std::optional<T>>
   static rapidjson::Value serialize(const std::optional<T>& value, rapidjson::Value::AllocatorType &allocator)
   {
     if (value.has_value())
-      return serialize(value.value(), allocator);
+      return json_serialize(value.value(), allocator);
     return rapidjson::Value();
   }
   static std::optional<T> deserialize(const rapidjson::Value &value)
