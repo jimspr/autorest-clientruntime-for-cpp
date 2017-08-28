@@ -73,7 +73,7 @@ public:
     #undef JDSO
 };
 
-future_t<http_response<optional<bearer_token>>> get_azure_token_using_client_credentials(curl_requester_t& root_handler, 
+future_t<http_response<bearer_token>> get_azure_token_using_client_credentials(curl_requester_t& root_handler, 
   const string& tenant, const string& client_id, const string& client_secret, const string& resource, cancellation_token_t cancellationToken = {})
 {
     auto curl = curl_easy_init();
@@ -104,7 +104,7 @@ future_t<http_response<optional<bearer_token>>> get_azure_token_using_client_cre
     
     rapidjson::MemoryPoolAllocator<> allocator;
     cancellationToken.throw_if_cancellation_requested();
-    http_response<optional<bearer_token>> _httpResponse = co_await root_handler.invoke(curl);
+    http_response<bearer_token> _httpResponse = co_await root_handler.invoke(curl);
     cancellationToken.throw_if_cancellation_requested();
     // Dispatch based on response
     switch (_httpResponse.http_code)

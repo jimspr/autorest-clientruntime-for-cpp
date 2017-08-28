@@ -60,7 +60,7 @@ struct delegating_handler_t
 {
 };
 
-template <typename T = std::monostate>
+template <typename T>
 struct http_response : public ::awaitcurl::http_response_t
 {
   http_response(const http_response_t& base) : http_response_t(base)
@@ -75,7 +75,24 @@ struct http_response : public ::awaitcurl::http_response_t
   }
   http_response& operator = (const http_response&) = default;
   http_response& operator = (http_response&&) = default;
-  T object;
+  std::optional<T> object;
+};
+
+template <>
+struct http_response<void> : public ::awaitcurl::http_response_t
+{
+  http_response(const http_response_t& base) : http_response_t(base)
+  {
+  }
+  http_response() = default;
+  http_response(const http_response&) = default;
+  http_response(http_response&&) = default;
+  http_response& operator = (const http_response_t& base)
+  {
+    *this = http_response(base);
+  }
+  http_response& operator = (const http_response&) = default;
+  http_response& operator = (http_response&&) = default;
 };
 
 struct service_client_t
